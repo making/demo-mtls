@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.fail;
 		"spring.ssl.bundle.pem.client.keystore.certificate=classpath:self-signed/client.crt",
 		"spring.ssl.bundle.pem.client.keystore.private-key=classpath:self-signed/client.key",
 		"spring.ssl.bundle.pem.client.truststore.certificate=classpath:self-signed/ca.crt",
-		"spring.ssl.bundle.pem.ca-only.truststore.certificate=classpath:self-signed/ca.crt"
+		"spring.ssl.bundle.pem.cacert.truststore.certificate=classpath:self-signed/ca.crt"
 })
 class DemoMtlsApplicationTests {
 	@LocalServerPort int port;
@@ -48,7 +48,7 @@ class DemoMtlsApplicationTests {
 	void healthCheckWithoutCertificate() {
 		RestClient restClient = this.restClientBuilder
 				.baseUrl("https://localhost:" + this.port)
-				.apply(this.clientSsl.fromBundle("ca-only"))
+				.apply(this.clientSsl.fromBundle("cacert"))
 				.build();
 		try {
 			restClient.get()
