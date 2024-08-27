@@ -28,13 +28,13 @@ class DemoMtlsApplicationTests {
 
 	@Autowired RestClient.Builder restClientBuilder;
 
-	@Autowired RestClientSsl sslBundle;
+	@Autowired RestClientSsl clientSsl;
 
 	@Test
 	void healthCheckWithValidCertificate() {
 		RestClient restClient = this.restClientBuilder
 				.baseUrl("https://localhost:" + this.port)
-				.apply(this.sslBundle.fromBundle("client"))
+				.apply(this.clientSsl.fromBundle("client"))
 				.build();
 		ResponseEntity<String> response = restClient.get()
 				.uri("/actuator/health")
@@ -48,7 +48,7 @@ class DemoMtlsApplicationTests {
 	void healthCheckWithoutCertificate() {
 		RestClient restClient = this.restClientBuilder
 				.baseUrl("https://localhost:" + this.port)
-				.apply(this.sslBundle.fromBundle("ca-only"))
+				.apply(this.clientSsl.fromBundle("ca-only"))
 				.build();
 		try {
 			restClient.get()
@@ -67,7 +67,7 @@ class DemoMtlsApplicationTests {
 	void hello() {
 		RestClient restClient = this.restClientBuilder
 				.baseUrl("https://localhost:" + this.port)
-				.apply(this.sslBundle.fromBundle("client"))
+				.apply(this.clientSsl.fromBundle("client"))
 				.build();
 		ResponseEntity<String> response = restClient.get()
 				.uri("/")
